@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgotten Password</title>
+    <link rel="stylesheet" href="../css/forgotstyle.css">
+    <script>
+        function validateInput()
+        {
+            var input = document.getElementById("contact").value;
+            var pattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+            if(input.match(pattern))
+            {
+                alert("Reset password link will be sent to email address:" +input);
+            }
+            else
+            {
+                alert("Reset password link will be sent to mobile number:" +input);
+            }
+        }
+    </script>
+</head>
+<body>
+    <form>
+        <h2><u>Forgot password</u></h2><br><br>
+        <label for="contact" >Email or Mobile Number:</label>
+        <input type="text" id="contact" name="contact" required>
+        <input type="button" value="Reset Password" onclick="validateInput()">
+    </form>
+</body>
+</html>

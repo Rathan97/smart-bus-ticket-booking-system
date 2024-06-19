@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 20px;
+        }
+    
+        .container {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+    
+        .container label {
+            display: block;
+            margin-bottom: 10px;
+        }
+    
+        .container input[type="text"],
+        .container input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+    
+        .container button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #ff7200;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+    
+        .container button a {
+            text-decoration: none;
+            color: #fff;
+        }
+    
+        .container button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <label for="book-bus-ticket">Book bus tickets</label>
+        <hr>
+        <label for="from">From</label>
+        <input type="text" id="from" name="from"><br>
+        <label for="to">To</label>
+        <input type="text" id="to" name="to"><br>
+        <label for="onwards">Onwards</label>
+        <input type="date" id="onwards" name="onwards"><br>
+        <label for="return">Return</label>
+        <input type="date" id="return" name="return"><br>
+        <button><a href="#">Find Buses</a></button>
+    </div>
+
+</body>
+</html>

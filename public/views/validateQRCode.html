@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Scanner</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ccc;
+    }
+
+    header {
+      background-color: #007bff;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      text-decoration: underline;
+    }
+
+    video {
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
+
+    #detailsContainer {
+      display: none;
+    }
+
+    #validateDetailsButton {
+      background-color: #007bff;
+      color: #fff;
+      font-size: 16px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+     
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    #validateDetailsButton:hover {
+      background-color: #0056b3;
+    }
+
+    
+    #scannedDetailsContainer {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    #scannedDetailsTitle {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    #scannedDetailsContent {
+      font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+    }
+
+    .detail-item {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>QR Code Scanner</h1>
+  </header>
+  <div class="container">
+    <video id="scanner" autoplay></video>
+    <div id="scannedDetailsContainer">
+      <h2 id="scannedDetailsTitle">Scanned Details:</h2>
+      <p id="scannedDetailsContent"></p>
+      <button id="validateDetailsButton">Validate Details</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+  <script>
+
+
+    let scanner = null;
+
+     document.addEventListener("DOMContentLoaded", function () {
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const scannedDetailsContainer = document.getElementById('scannedDetailsContainer');
+      const scannedDetailsContent = document.getElementById('scannedDetailsContent');
+      const validateDetailsButton = document.getElementById('validateDetailsButton');
+
+     
+      
+
+    function startScanning() {
+      if (!scanner) {
+        scanner = new Instascan.Scanner({ video: document.getElementById('scanner') });
+
+        scanner.addListener('scan', function (content) {
+          scannedDetailsContent.textContent = content;
+            scannedDetailsContainer.style.display = 'block';
+          scanner.stop(); // Stop scanning once QR code is detected
+        });
+      }
+
+      function displayScannedDetails(content) {
+        const detailsContainer = document.getElementById('scannedDetailsContent');
+        detailsContainer.innerHTML = '';
+
+        const details = content.split('\n');
+        details.forEach(detail => {
+          const detailItem = document.createElement('p');
+          detailItem.textContent = detail;
+          detailItem.classList.add('detail-item');
+          detailsContainer.appendChild(detailItem);
+        });
+      }
+
+
+      Instascan.Camera.getCameras()
+        .then(cameras => {
+          if (cameras.length > 0) {
+            scanner.start(cameras[0]); 
+          } else {
+            alert('No cameras found.');
+          }
+        })
+        .catch(error => {
+          console.error('Error accessing camera:', error);
+          alert('Error accessing camera.');
+        });
+    }
+
+    document.getElementById('validateDetailsButton').addEventListener('click', function () {
+      const scannedDetails = document.getElementById('scannedDetailsContent').textContent;
+      
+     
+      const conductorBusNumber = urlParams.get('busNumber');
+      console.log(conductorBusNumber)
+
+     
+     const datePattern = /Date:\s*(\d{2}\/\d{2}\/\d{4})/;
+     console.log(datePattern)
+        const busNumberPattern = /Bus Number:\s*(\w+)/;
+
+        const qrDateMatch = scannedDetails.match(datePattern);
+       
+        const qrBusNumberMatch = scannedDetails.match(busNumberPattern);
+
+        if (!qrDateMatch || !qrBusNumberMatch) {
+          alert('Invalid QR code format.');
+          
+          window.close();
+          return;
+        }
+        const qrDate = qrDateMatch[1];
+        console.log(qrDate)
+        const qrBusNumber = qrBusNumberMatch[1];
+        console.log(qrBusNumber)
+
+      if (qrBusNumber === conductorBusNumber && qrDate === getCurrentDate()) {
+        alert('Ticket Validated!');
+        
+        window.close();
+      } else {
+        alert('Invalid Ticket!');
+       
+        window.close();
+      }
+    });
+
+      function getCurrentDate() {
+    const date = new Date();
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+    
+  }
+
+
+    
+
+
+    
+    startScanning();
+});
+  </script>
+</body>
+</html>

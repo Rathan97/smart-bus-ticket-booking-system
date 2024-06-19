@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Account</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+
+<style>
+
+    
+    body{
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        background-color: #6abadeba;
+        font-family: 'Poppins', sans-serif;
+        
+    }
+    
+    .header .box-text {
+        width: 1350px;
+        height: 600px;
+        margin: 45px ;
+        background-color: #23463f;
+        border-radius: 15px;
+       
+        padding: 30px;
+        position: absolute; /* Added */
+       
+    }
+
+    .header .box-text{
+        flex: 1;
+        text-align: left;
+    }
+    
+    header .box-text top-right a{
+        list-style: none;
+        display: inline-block;
+        padding: 30px 50px;
+        position: relative;
+        color: #fff;
+        text-decoration: none;
+        font-size: 13px;
+    }
+    
+    
+    header .box-text top-right a::after{
+        content: '';
+        width: 0%;
+        height: 2px;
+        background: #f44336;
+        display: block;
+        margin: auto;
+        transition: 0.5s;
+    }
+    
+    header .box-text top-right a:hover::after{
+        width: 100%;
+    
+    }
+    img{
+        background: none;
+        height: 50px;
+        width: 50px;
+    }
+    
+    
+    .top-right {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        display: flex;
+        padding: 20px;
+        align-items: center;
+    }
+    
+    .top-right a {
+        text-decoration: none;
+        font-size: 25px;
+        color: #fff;
+        margin-left: 10px;
+        transition: 0.3s;
+    }
+    
+    .top-right a:hover {
+        color: #ff7200;
+    }
+
+
+    .text {
+        
+       text-align: center;
+        color: #fff;
+        display: block;
+        margin-bottom: 5px;
+        padding: 0px;
+        margin-right:90px;
+        
+    }
+    .text-details{
+        text-align: center;
+       
+        
+    }
+    
+  
+    
+::placeholder{
+    
+    font-family: Arial;
+    font-weight: bold;
+}
+
+    select,option{
+        padding: 6px;
+        border-radius: 6px;
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+        font-weight: bold;
+        
+    }
+
+
+    
+    input[type="text"]
+    {
+        width: 15%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        font-weight: bold;
+       
+    }
+    label{
+        color: #fff;
+        font-weight: bold;
+    }
+    .button{
+        width: 100px;
+    height: 40px;
+    background: #ff7200;
+    margin-top: 30px;
+    margin-left: 35px;
+    font-size: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #fff;
+    transition: 0.4s ease;
+    
+    }
+    .button:hover{
+        background: #fff;
+    color: #ff7200;
+    }
+    .button a{
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown input[type="text"] {
+      width: 200px;
+      padding: 10px;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 200px;
+      max-height: 200px;
+      overflow-y: scroll;
+      border: 1px solid #ccc;
+      z-index: 2;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px;
+      cursor: pointer;
+      
+    }
+
+    .dropdown-content a:hover {
+      background-color: #eaeaea;
+    }
+
+    .dropdown.open .dropdown-content {
+      display: block;
+    }
+
+    #busDetails {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+#busCards {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
+  align-items: center;
+  background-color: #f2f2f2;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.bus-card {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  border-radius: 10px;
+  color: #ccc;
+}
+
+.bus-number {
+  font-weight: bold;
+}
+
+.selectButton {
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.selectButton:hover {
+  background-color: #45a049;
+}
+
+#map-container {
+  display: flex;
+}
+h1 {
+  text-align: center;
+}
+
+#map {
+  width: 100%;
+  height: 400px;
+  margin-top: 20px;
+}
+
+#qrcode {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+</style>
+</head>
+<body>
+    <section class="header">
+        <nav>
+            <div class="box-text">
+                <a href="index1.html"><img src="../images/logo2.jpg" class="logo"></a>
+                <div class="top-right">
+                    <a href="#">Help</a>
+                    <a href="profile-settings.html">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="username" class="username"></span>
+                    </a>
+                </div>
+                  
+                 <hr>
+                
+
+                <div class="text-details">
+                    <label for="fromLocation">From:</label>
+                    <div class="dropdown">
+                        <input type="text" id="fromLocation" name="fromLocation" autocomplete="off" placeholder="Enter Source location">
+                        <div class="dropdown-content" id="fromLocationDropdown"></div>
+                      </div>
+                
+
+                      <label for="toLocation">To:</label>
+                      <div class="dropdown">
+                        <input type="text" id="toLocation" name="toLocation" autocomplete="off" placeholder="Enter Destination location">
+                        <div class="dropdown-content" id="toLocationDropdown"></div>
+                      </div>
+                
+                <button class="button" id="findBusesButton" value="Find buses">Find Buses</button>
+                <div id="busDetails">
+                  
+                  
+                  <div id="busCards"></div>
+
+                </div>
+                </div>
+                
+                
+        </nav>
+
+    </section>
+    <div id="map-container">
+      <div id="map"></div>
+      <div id="qrcode"></div>
+    </div>
+    
+
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.5.0/build/ol.js"></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+ 
+ function generateMapAndQRCode(busNumber, fromLocation, toLocation, distance, fairPrice) {
+      $.get("/api/get-coordinates?location=" + fromLocation, function (fromCoordinates) {
+        $.get("/api/get-coordinates?location=" + toLocation, function (toCoordinates) {
+          var mapUrl = "https://www.openstreetmap.org/directions?engine=graphhopper_car&route=" +
+            fromCoordinates.latitude + "%2C" + fromCoordinates.longitude + "%3B" +
+            toCoordinates.latitude + "%2C" + toCoordinates.longitude;
+
+          var qrCodeData = "Bus Number: " + busNumber + "\n" +
+            "From: " + fromLocation + "\n" +
+            "To: " + toLocation + "\n" +
+            "Distance: " + distance + " km\n" +
+            "Fair Price: " + fairPrice;
+
+          var qrCode = new QRCode("qrcode", {
+            text: qrCodeData,
+            width: 128,
+            height: 128,
+          });
+
+          $("#qrcode").show();
+
+          window.open(mapUrl, "_blank");
+        });
+      });
+    }
+
+
+function displayMap(fromCoordinates, toCoordinates) {
+      var map = L.map("map").setView([fromCoordinates.latitude, fromCoordinates.longitude], 12);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors"
+      }).addTo(map);
+
+      var redIcon = L.icon({
+        iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+
+      var blueIcon = L.icon({
+        iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+
+      var fromMarker = L.marker([fromCoordinates.latitude, fromCoordinates.longitude], {icon: redIcon}).addTo(map);
+      var toMarker = L.marker([toCoordinates.latitude, toCoordinates.longitude], {icon: blueIcon}).addTo(map);
+
+      L.polyline([[fromCoordinates.latitude, fromCoordinates.longitude], [toCoordinates.latitude, toCoordinates.longitude]], {color: "black"}).addTo(map);
+    }
+
+
+       
+          $(document).ready(function() {
+    var fromLocationInput = $("#fromLocation");
+    var toLocationInput = $("#toLocation");
+  
+    fromLocationInput.on("input", function() {
+      var input = fromLocationInput.val().trim();
+      if (input.length >= 2) {
+        $.get("/api/from-options?input=" + input, function(data) {
+          var options = "";
+          data.forEach(function(option) {
+            options += "<a>" + option + "</a>";
+          });
+          $("#fromLocationDropdown").html(options);
+          $(".dropdown").addClass("open");
+          $("#toLocationDropdown").empty(); // Clear the options in the "To" location dropdown
+        });
+      } else {
+        $(".dropdown").removeClass("open");
+        $("#toLocationDropdown").empty(); // Clear the options in the "To" location dropdown
+      }
+    });
+  
+    toLocationInput.on("input", function() {
+      var input = toLocationInput.val().trim();
+      if (input.length >= 2) {
+        $.get("/api/to-options?input=" + input, function(data) {
+          var options = "";
+          data.forEach(function(option) {
+            options += "<a>" + option + "</a>";
+          });
+          $("#toLocationDropdown").html(options);
+          $(".dropdown").addClass("open");
+          $("#fromLocationDropdown").empty(); // Clear the options in the "From" location dropdown
+        });
+      } else {
+        $(".dropdown").removeClass("open");
+        $("#fromLocationDropdown").empty(); // Clear the options in the "From" location dropdown
+      }
+    });
+  
+    
+
+// ...
+
+var paymentStatus = false; 
+  $("#findBusesButton").click(function() {
+    var fromLocation = $("#fromLocation").val().trim();
+    var toLocation = $("#toLocation").val().trim();
+
+    if (fromLocation.length > 0 && toLocation.length > 0) {
+      $.post("/api/find-buses", { fromLocation: fromLocation, toLocation: toLocation }, function(data) {
+        var busDetails = "<div id='busCards'>";
+        busDetails += "<div class='header'>";
+        busDetails += "<p>Bus Number</p>";
+        busDetails += "<p>From - To</p>";
+        busDetails += "<p>Distance</p>";
+        busDetails += "<p>Fare Price</p>";
+        busDetails += "<p>Action</p>";
+        busDetails += "</div>";
+
+        data.forEach(function(bus) {
+          var distance = bus["DISTANCE"];
+          var farePrice = calculateFarePrice(distance);
+          busDetails += "<div class='bus-card'>";
+          busDetails += "<p class='bus-number'>" + bus["BUS_NUMBERS"] + "</p>";
+          busDetails += "<p class='from-to'>" + bus["FROM_LOCATION"] + " - " + bus["DESTINATION"] + "</p>";
+          busDetails += "<p class='distance'>" + bus["DISTANCE"] + " km</p>";
+          busDetails += "<p class='fare-price'>" + farePrice + " Rs</p>";
+          busDetails += "<button class='selectButton' data-bus-number='" + bus["BUS_NUMBERS"] + "' data-from-location='" + bus["FROM_LOCATION"] + "' data-to-location='" + bus["DESTINATION"] + "' data-distance='" + bus["DISTANCE"] + "' data-fare-price='" + farePrice + "'>Select</button>";
+          busDetails += "</div>";
+        });
+
+        busDetails += "</div>";
+        $("#busDetails").empty();
+        $("#busDetails").append(busDetails);
+      });
+    }
+  });
+
+  function calculateFarePrice(distance) {
+    if (distance < 10) {
+      return 10; // Fixed fare price for distances less than 10 km
+    } else {
+      return distance * 1.5; // farePerKilometer is the variable representing the fare per kilometer
+    }
+  }
+
+  $(document).on("click", ".selectButton", function() {
+    var busNumber = $(this).data("bus-number");
+    var fromLocation = $(this).data("from-location");
+    var toLocation = $(this).data("to-location");
+    var distance = $(this).data("distance");
+    var farePrice = $(this).data("fare-price");
+
+    // Open new window for payment details
+    var paymentWindow = window.open("", "_blank");
+    var paymentContent = `
+      <h2>Payment Details</h2>
+      <p><strong>Bus Number:</strong> ${busNumber}</p>
+      <p><strong>From:</strong> ${fromLocation}</p>
+      <p><strong>To:</strong> ${toLocation}</p>
+      <p><strong>Distance:</strong> ${distance} km</p>
+      <p><strong>Fare Price:</strong> ${farePrice} Rs</p>
+      <button id="payNowButton">Pay Now</button>
+      <div id="qrcode"></div>
+      <div id="map"></div>
+    `;
+
+    paymentWindow.document.write(paymentContent);
+
+    // Handle payment button click
+    $(paymentWindow.document).on("click", "#payNowButton", function() {
+      // Display payment successful message
+      if (paymentStatus) {
+        alert("Payment already made!");
+      } else {
+        alert("Payment Successful!");
+
+      // Generate QR code in the payment window
+      var qrCodeData = `
+        Bus Number: ${busNumber}
+        From: ${fromLocation}
+        To: ${toLocation}
+        Distance: ${distance} km
+        Fare Price: ${farePrice} Rs
+      `;
+
+      var qrcode = new QRCode(paymentWindow.document.getElementById("qrcode"), {
+        text: qrCodeData,
+        width: 128,
+        height: 128
+      });
+
+     
+        // Generate map in the payment window
+        var map = L.map(paymentWindow.document.getElementById("map")).setView([0, 0], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Get coordinates for from and to locations
+        $.when(
+          $.get("/api/get-coordinates?location=" + fromLocation),
+          $.get("/api/get-coordinates?location=" + toLocation)
+        ).done(function(fromData, toData) {
+          var fromCoordinates = fromData[0];
+          var toCoordinates = toData[0];
+
+          // Add markers to the map
+          L.marker([fromCoordinates.latitude, fromCoordinates.longitude], { icon: redIcon }).addTo(map);
+          L.marker([toCoordinates.latitude, toCoordinates.longitude], { icon: blueIcon }).addTo(map);
+
+          // Fit the map bounds to the markers
+          var bounds = L.latLngBounds([
+            [fromCoordinates.latitude, fromCoordinates.longitude],
+            [toCoordinates.latitude, toCoordinates.longitude]
+          ]);
+          map.fitBounds(bounds);
+
+          // Draw a line between the markers
+          L.polyline([
+            [fromCoordinates.latitude, fromCoordinates.longitude],
+            [toCoordinates.latitude, toCoordinates.longitude]
+          ]).addTo(map);
+        });
+
+        paymentStatus = true; // Update payment status
+      }
+    });
+  });
+
+  // Define custom marker icons
+  var redIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
+  var blueIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+
+    $(document).on("click", "#fromLocationDropdown a", function() {
+      var selectedOption = $(this).text();
+      fromLocationInput.val(selectedOption);
+      $(".dropdown").removeClass("open");
+      $("#toLocationDropdown").empty(); // Clear the options in the "To" location dropdown
+    });
+  
+    $(document).on("click", "#toLocationDropdown a", function() {
+      var selectedOption = $(this).text();
+      toLocationInput.val(selectedOption);
+      $(".dropdown").removeClass("open");
+      $("#fromLocationDropdown").empty(); // Clear the options in the "From" location dropdown
+    });
+  
+    // Close dropdown when clicking outside
+    $(document).click(function(event) {
+      var target = $(event.target);
+      if (!target.closest(".dropdown").length && !target.is("#fromLocation") && !target.is("#toLocation")) {
+        $(".dropdown").removeClass("open");
+        $("#fromLocationDropdown").empty(); // Clear the options in the "From" location dropdown
+        $("#toLocationDropdown").empty(); // Clear the options in the "To" location dropdown
+      }
+    });
+   });
+  
+  
+  </script>
+    
+</body>
+</html>

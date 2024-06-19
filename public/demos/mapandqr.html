@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bus Ticket Booking System</title>
+  <style>
+    /* Add your CSS styles here */
+  </style>
+</head>
+<body>
+  <label for="fromLocation">From:</label>
+  <input type="text" id="fromLocation" name="fromLocation" autocomplete="off">
+
+  <label for="toLocation">To:</label>
+  <input type="text" id="toLocation" name="toLocation" autocomplete="off">
+
+  <button id="findBusesButton">Find Buses</button>
+
+  <div id="busDetails"></div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $("#findBusesButton").click(function() {
+        var fromLocation = $("#fromLocation").val().trim();
+        var toLocation = $("#toLocation").val().trim();
+
+        if (fromLocation.length > 0 && toLocation.length > 0) {
+          $.post("/api/find-buses", { fromLocation: fromLocation, toLocation: toLocation }, function(data) {
+            var busDetails = "<div id='busCards'>";
+            busDetails += "<div class='header'>";
+            busDetails += "<p>Bus Number</p>";
+            busDetails += "<p>From - To</p>";
+            busDetails += "<p>Distance</p>";
+            busDetails += "<p>Action</p>";
+            busDetails += "</div>";
+
+            data.forEach(function(bus) {
+              busDetails += "<div class='bus-card'>";
+              busDetails += "<p class='bus-number'>" + bus["BUS_NUMBER"] + "</p>";
+              busDetails += "<p class='from-to'>" + bus["FROM_LOCATION"] + " - " + bus["TO_LOCATION"] + "</p>";
+              busDetails += "<p class='distance'>" + bus["DISTANCE"] + " km</p>";
+              busDetails += "<button class='selectButton' onclick='generateMapAndQRCode(\"" + bus["BUS_NUMBER"] + "\", \"" + bus["FROM_LOCATION"] + "\", \"" + bus["TO_LOCATION"] + "\", " + bus["DISTANCE"] + ", " + bus["FAIR_PRICE"] + ")'>Select</button>";
+              busDetails += "</div>";
+            });
+
+            busDetails += "</div>";
+            $("#busDetails").empty().append(busDetails);
+          });
+        }
+      });
+
+      function generateMapAndQRCode(busNumber, fromLocation, toLocation, distance, fairPrice) {
+        $.post("/api/generate-map-and-qrcode", { fromLocation: fromLocation, toLocation: toLocation }, function(data) {
+          var mapUrl = data.mapUrl;
+          var qrCodeImage = data.qrCodeImage;
+
+          // Display the map URL and QR code image
+          var resultDetails = "<div class='result-details'>";
+          resultDetails += "<p><strong>Bus Number:</strong> " + busNumber + "</p>";
+          resultDetails += "<p><strong>From:</strong> " + fromLocation + "</p>";
+          resultDetails += "<p><strong>To:</strong> " + toLocation + "</p>";
+          resultDetails += "<p><strong>Distance:</strong> " + distance + " km</p>";
+          resultDetails += "<p><strong>Fair Price:</strong> " + fairPrice + "</p>";
+          resultDetails += "<p><strong>Map URL:</strong> <a href='" + mapUrl + "' target='_blank'>" + mapUrl + "</a></p>";
+          resultDetails += "<img src='" + qrCodeImage + "' alt='QR Code'>";
+          resultDetails += "</div>";
+
+          $("#busDetails").append(resultDetails);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

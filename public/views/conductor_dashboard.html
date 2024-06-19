@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conductor Dashboard</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+   crossorigin=""/>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ccc;
+    }
+
+    header {
+      background-color: #007bff;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .container {
+       text-align: center;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      text-decoration: underline;
+    }
+    input[type="text"] {
+            
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            margin-right: 50px;
+            font-size: 15px;
+            
+        }
+       span{
+            
+            padding: 7px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            margin-right: 50px;
+            margin-left: 5px;
+            
+        }
+
+        label {
+            color: black;
+            font-weight: bold;
+            
+        }
+        .text-details {
+            text-align: center;
+            margin-left: 30px;
+            margin-top: 40px;
+        }
+        select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+        
+
+
+    #map-container {
+          margin-top: 90px;
+            flex: 1;
+            padding: 20px;
+            max-width: 600px;
+        }
+
+        #map {
+         justify-content: center;
+        width: 90%;
+      height: 400px ;
+      margin:auto;
+    border-radius: 10px;
+    }
+
+    #validateQRCodeButton {
+      background-color: #007bff;
+      color: #fff;
+      font-size: 16px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    #validateQRCodeButton:hover {
+      background-color: #0056b3;
+    }
+
+    
+
+    .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown input[type="text"],select {
+            width: 140px;
+            padding: 10px;
+        }
+
+        .dropdown-content {
+          display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            max-height: 200px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            z-index: 1000 ;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-left: 90px;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #eaeaea;
+        }
+
+        .dropdown.open .dropdown-content {
+            display: block;
+        }
+
+        ::placeholder {
+            font-family: Arial;
+            font-weight: bold;
+        }
+        #abutton{
+          color: #f9f9f9;
+          text-decoration: none;
+          
+        }
+        
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Conductor Dashboard</h1>
+  </header>
+  <div class="container">
+    <div class="text-details">
+        
+    
+    <label for="conductorId">Conductor ID:</label><span id="conductorId"></span>
+   
+    
+    <div class="dropdown">
+      <label for="busnumbers">Select Bus:</label>
+        
+      <input type="text" id="busnumbers" name="busnumbers" autocomplete="off"
+      placeholder="Select Bus Number" >
+        <div class="dropdown-content" id="busnumbersDropdown"></div>
+    </div>
+    </div>
+ 
+  
+    <div id="mapContainer"></div>
+    <div id="map"></div>
+
+    <button id="validateQRCodeButton"> Validate QR Code</button>
+ 
+  </div>
+  
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+   crossorigin=""></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+
+  <script>
+    let map=null;
+
+ $(document).ready(function() {
+
+  fetch('/con-details')
+      .then(response => response.json())
+      .then(con => {
+       
+        const conId = document.getElementById('conductorId');
+       
+
+       
+        conId.textContent = `${con.id}`;
+        
+      })
+      .catch(error => {
+        console.error('Error fetching conductor details:', error);
+        alert('Error fetching conductor details');
+      });
+
+
+ var busnumbersInput = $("#busnumbers");
+           
+ busnumbersInput.on("input", function() {
+        console.log(input)
+      var input =busnumbersInput.val().trim();
+      if (input.length >= 2) {
+        $.get("/api/bus-options?input=" + input, function(data) {
+          var options = "";
+          data.forEach(function(option) {
+            options += "<a>" + option + "</a>";
+          });
+          $("#busnumbersDropdown").html(options);
+          $(".dropdown").addClass("open");
+        
+        });
+      } else {
+        $(".dropdown").removeClass("open");
+       
+      }
+    });
+
+
+    $(document).on("click", "#busnumbersDropdown a", function () {
+                var selectedOption = $(this).text();
+                busnumbersInput.val(selectedOption);
+      $(".dropdown").removeClass("open");
+     
+            });
+
+            $(document).click(function (event) {
+                var target = $(event.target);
+      if (!target.closest(".dropdown").length && !target.is("#busnumbers")) {
+        $(".dropdown").removeClass("open");
+        $("#busnumbersDropdown").empty(); // Clear the options in the "From" location dropdown
+       
+      }
+    });
+
+
+    $(document).on("click", "#busnumbersDropdown a", function () {
+    const selectedBusNumber = $(this).text().trim();
+    $("#busnumbers").val(selectedBusNumber);
+ 
+    displayMap(selectedBusNumber);
+    $(document).on("click", "#validateQRCodeButton", function () {
+        const selectedBusNumber = $("#busnumbers").val().trim();
+        if (selectedBusNumber) {
+          window.open(`/validateQRCode?busNumber=${selectedBusNumber}`, '_blank');
+        } else {
+          alert("Please select a bus number before validating the QR code.");
+        }
+      });
+  });
+
+ 
+  
+
+
+
+ function displayMap(busNumber) {
+
+  var redIcon = L.icon({
+    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+  
+  $.get("/api/get-map-data?busNumber=" + busNumber, function (mapData) {
+    const fromCoordinates = mapData.fromLocation.coordinates;
+    console.log(fromCoordinates)
+    const toCoordinates = mapData.toLocation.coordinates;
+    console.log(toCoordinates)
+   
+
+   
+    if (!map) {
+    map = L.map("map").setView([0, 0], 13);
+ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a> contributors'
+ }).addTo(map);
+    }else {
+
+    map.eachLayer((layer) => {
+        if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+          map.removeLayer(layer);
+        }
+      });
+    }
+
+    
+    L.marker([fromCoordinates.latitude, fromCoordinates.longitude]).addTo(map);
+    L.marker([toCoordinates.latitude, toCoordinates.longitude], { icon: redIcon }).addTo(map);
+
+    L.marker([fromCoordinates.latitude, fromCoordinates.longitude]).addTo(map)
+        .bindPopup("From: " + mapData.fromLocation.name)
+        .openPopup();
+
+    L.marker([toCoordinates.latitude, toCoordinates.longitude]).addTo(map)
+        .bindPopup("To: " +mapData.toLocation.name)
+        .openPopup();
+
+    var bounds = L.latLngBounds([
+        [fromCoordinates.latitude, fromCoordinates.longitude],
+        [toCoordinates.latitude, toCoordinates.longitude]
+    ]);
+    map.fitBounds(bounds);
+
+    L.polyline([
+        [fromCoordinates.latitude, fromCoordinates.longitude],
+        [toCoordinates.latitude, toCoordinates.longitude]
+    ]).addTo(map);
+    
+  });
+}
+
+
+});
+
+
+    
+
+
+
+
+ 
+  
+  
+</script>
+  
+</body>
+</html>

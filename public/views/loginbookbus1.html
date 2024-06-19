@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Book Bus</title>
+</head>
+<body>
+  <label for="placeInput">Enter Place:</label>
+  <input type="text" id="placeInput">
+
+  <ul id="placeList"></ul>
+
+  <script>
+    const placeInput = document.getElementById('placeInput');
+    const placeList = document.getElementById('placeList');
+
+    placeInput.addEventListener('input', () => {
+      const userInput = placeInput.value;
+
+      fetch(`/places?input=${userInput}`)
+        .then(response => response.json())
+        .then(data => {
+          // Clear previous results
+          placeList.innerHTML = '';
+
+          // Display the filtered places
+          data.forEach(place => {
+            const listItem = document.createElement('li');
+            listItem.textContent = place.name;
+            placeList.appendChild(listItem);
+          });
+        });
+    });
+  </script>
+</body>
+</html>

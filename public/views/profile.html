@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Profile</title>
+  <style>
+  /* Add your awesome styles here */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  
+}
+
+.profile-container {
+  max-width: 450px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.profile-container h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.profile-container p {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.profile-container a {
+  display: block;
+  margin-top: 20px;
+  text-align: center;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.profile-container a:hover {
+  background-color: #0056b3;
+}
+#profile{
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid black;
+}
+#welcome-message{
+  padding-top: 10px;
+}
+
+
+  </style>
+</head>
+
+<body>
+  <div class="profile-container">
+    <h1 id="profile">YOUR PROFILE</h1>
+    <h1 id="welcome-message"></h1><br>
+    <p id="user-id"></p><br>
+    <p id="email"></p><br>
+    <p id="mobile-number"></p><br>
+    <a href="/logout">Logout</a>
+  </div>
+  <script>
+    
+    fetch('/user-details')
+      .then(response => response.json())
+      .then(user => {
+        const welcomeMessage = document.getElementById('welcome-message');
+        const userId = document.getElementById('user-id');
+        const email = document.getElementById('email');
+        const mobileNumber = document.getElementById('mobile-number');
+
+        welcomeMessage.textContent = `Welcome, ${user.fullname}!`;
+        userId.textContent = `User ID: ${user.id}`;
+        email.textContent = `Email: ${user.email}`;
+        mobileNumber.textContent = `Mobile Number: ${user.mobilenumber}`;
+      })
+      .catch(error => {
+        console.error('Error fetching user details:', error);
+        alert('Error fetching user details');
+      });
+  </script>
+</body>
+
+</html>

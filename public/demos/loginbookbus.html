@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login and Book Bus</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+  <h1>Login and Book Bus</h1>
+
+  <label for="city">Select Your City:</label>
+  <select id="city" name="city">
+    <option value="-1">-- Select City --</option>
+  </select>
+
+  <label for="location">Select Your Location:</label>
+  <select id="location" name="location">
+    <option value="-1">-- Select Location --</option>
+  </select>
+
+  <script>
+    $(document).ready(function() {
+      // Make an AJAX request to fetch the places data
+      $.get('/places', function(data) {
+        // Populate the city dropdown
+        var cityDropdown = $('#city');
+        data.forEach(function(place) {
+          cityDropdown.append($('<option>', {
+            value: place.city,
+            text: place.city
+          }));
+        });
+
+        // Handle city dropdown change event
+        cityDropdown.change(function() {
+          var selectedCity = $(this).val();
+          var locationDropdown = $('#location');
+          locationDropdown.empty();
+          locationDropdown.append($('<option>', {
+            value: '-1',
+            text: '-- Select Location --'
+          }));
+
+          // Filter the locations based on the selected city
+          var filteredLocations = data.filter(function(place) {
+            return place.city === selectedCity;
+          });
+
+          // Populate the location dropdown
+          filteredLocations.forEach(function(place) {
+            locationDropdown.append($('<option>', {
+              value: place.location,
+              text: place.location
+            }));
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

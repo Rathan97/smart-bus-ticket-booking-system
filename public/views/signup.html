@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Passenger Signup</title>
+    <link rel="stylesheet" type="text/css" href="../css/signup.css">
+    <script src="../js/signupscript.js"></script>
+   
+</head>
+<body>
+    <form  method="post" action="/signup" id="form">
+        <h2>Passenger Signup</h2>
+
+        <label for="name">Full Name:</label>
+        <input type="text" id="fullname" name="fullname" placeholder="Enter Your Full name" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your Email" required><br>
+
+        <label for="mobile">Mobile Number:</label>
+        <input type="number" id="mobile" name="mobilenumber" placeholder="Enter your mobile number" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required><br>
+
+        <label for="confirm-password">Confirm Password:</label>
+        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm password" required>
+
+        
+        <br><br>
+
+        
+
+        
+        
+        <input type="submit"  onclick="return cpassword()" value="Sign Up">
+    </form>
+</body>
+</html>
